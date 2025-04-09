@@ -1,0 +1,52 @@
+<meta charset="UTF-8">
+<canvas id="matrixCanvas"></canvas>
+
+<script>
+const canvas = document.getElementById("matrixCanvas");
+const ctx = canvas.getContext("2d");
+
+// Make the canvas full screen
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const chars = "アァイィウウェエカガキギクグケゲコゴサザシジスズセゼソゾタダチッヂツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@$#&ᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリᑑ∷ᓭℸ ̣ ⚍⍊∴ ̇/||⨅";
+const fontSize = 16;
+const columns = Math.floor(canvas.width / fontSize);
+
+// Create an array of drops (one per column)
+const drops = Array(columns).fill(1);
+
+function drawMatrixRain() {
+   // Semi-transparent black background for trail effect
+   ctx.fillStyle = "rgba(255, 255, 0, 0.05)";
+   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+   // Set the text color to neon green
+   ctx.fillStyle = "#000";
+   ctx.font = fontSize + "px monospace";
+
+   // Loop through drops
+   for (let i = 0; i < drops.length; i++) {
+      const char = chars.charAt(Math.floor(Math.random() * chars.length));
+      ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+      // Randomly reset the drop to top
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+         drops[i] = 0;
+      }
+
+      // Move drop down
+      drops[i]++;
+   }
+
+   requestAnimationFrame(drawMatrixRain);
+}
+
+drawMatrixRain();
+
+// Handle window resizing
+window.addEventListener("resize", () => {
+   canvas.width = window.innerWidth;
+   canvas.height = window.innerHeight;
+});
+</script>
